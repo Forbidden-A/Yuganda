@@ -1,4 +1,4 @@
-# This is heavely inspired by Discord Coding Academy's Bracky Discord bot.
+# This is heavely inspired by Discord Coding Academy's Bracky Discord bot (https://gitlab.com/dcacademy/bracky).
 import os
 from typing import Type, TypeVar
 import attr
