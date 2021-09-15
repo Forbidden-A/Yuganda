@@ -39,17 +39,17 @@ class LoggingConfig(BaseConfig):
 
 
 @attr.s(frozen=True, auto_attribs=True)
-class PostgresConfig(BaseConfig):
+class EdgeDBConfig(BaseConfig):
     """
-    All values needed to connect to a PostgreSQL.
+    All values needed to connect to an EdgeDB Database.
     The defaults will assume the bot is running on Docker.
     """
 
-    password: str = attr.ib(repr=False, factory=lambda: os.environ["POSTGRES_PASSWORD"])
+    password: str = attr.ib(repr=False, factory=lambda: os.environ["EDGEDB_PASSWORD"])
     host: str = "yuganda-db"
-    port: int = 5432
-    user: str = "postgres"
-    database: str = "postgres"
+    port: int = 5656
+    user: str = "edgedb"
+    database: str = "edgedb"
 
 
 @attr.s(frozen=True, auto_attribs=True)
@@ -58,4 +58,4 @@ class Config(BaseConfig):
 
     bot: BotConfig
     logging: LoggingConfig = attr.ib(factory=LoggingConfig)
-    database: PostgresConfig = attr.ib(factory=PostgresConfig)
+    database: EdgeDBConfig = attr.ib(factory=EdgeDBConfig)

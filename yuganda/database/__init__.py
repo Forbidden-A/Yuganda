@@ -1,10 +1,11 @@
 import logging
-from yuganda.config.models import PostgresConfig
-import asyncpg
+import edgedb
+from yuganda.config.models import EdgeDBConfig
 
 _LOGGER = logging.getLogger()
 
 
-async def initialise_database(config: PostgresConfig):
-    data_pool = asyncpg.create_pool(**config.to_dict())
+async def initialise_database(config: EdgeDBConfig):
+    # edgedb://user:pass@host:port/database?option=value
+    data_pool = edgedb.asyncio_pool.create_async_pool(**config.to_dict())
     return data_pool

@@ -1,7 +1,6 @@
 import logging
 import os
 
-from asyncpg.pool import Pool
 from attr import setters
 from yuganda.database import initialise_database
 
@@ -10,6 +9,7 @@ from yuganda.config.models import Config
 from yuganda.config.load import deserialise_raw_config, load_config_file
 from hikari.intents import Intents
 import lightbulb
+import edgedb
 
 CONFIG_PATH = os.environ.get("YUGANDA_CONFIG_PATH") or "./config.yml"
 CONFIG_CACHE = deserialise_raw_config(load_config_file(CONFIG_PATH))
@@ -26,7 +26,7 @@ _LOGGER = logging.getLogger("yuganda")
 
 class Yuganda(lightbulb.Bot):
     def __init__(self) -> None:
-        self._data_pool: Pool
+        self._data_pool: edgedb.AsyncIOPool
         super().__init__(
             slash_commands_only=True, intents=Intents.ALL, token=self.config.bot.token
         )
@@ -39,13 +39,13 @@ class Yuganda(lightbulb.Bot):
         )
 
     @property
-    def data_pool(self) -> Pool:
+    def data_pool(self) -> edgedb.AsyncIOPool:
         if self._data_pool is None:
             raise RuntimeError("Data Pool is None.")
         return self._data_pool
 
     @data_pool.setter
-    def data_pool(self, pool: Pool):
+    def data_pool(self, pool: edgedb.AsyncIOPool):
         self._data_pool = pool
 
 

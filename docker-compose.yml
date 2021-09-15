@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  bot:
+    build: "."
+    restart: "always"
+    depends_on:
+      - "db"
+    env_file: "./.env"
+    links:
+      - "db"
+    container_name: "yuganda-bot"
+
+  db:
+    image: "edgedb/edgedb:1-beta3"
+    env_file: ./.env
+    environment:
+      EDGEDB_PASSWORD: ${EDGEDB_PASSWORD}
+    volumes:
+      - .edgedb:var/lib/edgedb/data
+    ports:
+      - 5656:5656
+    container_name: yuganda-db
