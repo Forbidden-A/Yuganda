@@ -56,6 +56,6 @@ class EdgeDBConfig(BaseConfig):
 class Config(BaseConfig):
     """Root configuration model."""
 
-    bot: BotConfig
+    bot: BotConfig = attr.ib(factory=BotConfig)
     logging: LoggingConfig = attr.ib(factory=LoggingConfig)
     database: EdgeDBConfig = attr.ib(factory=EdgeDBConfig)

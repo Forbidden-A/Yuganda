@@ -13,11 +13,11 @@ services:
 
   db:
     image: "edgedb/edgedb:1-beta3"
-    env_file: ./.env
+    env_file: "./.env"
     environment:
-      EDGEDB_PASSWORD: ${EDGEDB_PASSWORD}
+      EDGEDB_PASSWORD: "${EDGEDB_PASSWORD}"
     volumes:
-      - .edgedb:var/lib/edgedb/data
+      - ".edgedb:var/lib/edgedb/data"
     ports:
-      - 5656:5656
-    container_name: yuganda-db
+      - "5656:5656"
+    container_name: "yuganda-db"
