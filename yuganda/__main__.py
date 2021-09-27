@@ -1,7 +1,7 @@
 import logging
 import os
+import sys
 
-from attr import setters
 from yuganda.database import initialise_database
 
 from hikari.events.lifetime_events import StartingEvent
@@ -51,9 +51,11 @@ class Yuganda(lightbulb.Bot):
 
 async def on_starting(event: StartingEvent):
     _LOGGER.info("Bot is Starting..")
-    print(event.app.config)
     _LOGGER.info("Creating a connection pool to database..")
-    event.app.data_pool = await initialise_database(CONFIG_CACHE.database)
+    try:
+        event.app.data_pool = await initialise_database(CONFIG_CACHE.database)
+    except Exception:
+        sys.exit(-1)
 
 
 def main():

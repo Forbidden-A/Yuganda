@@ -18,4 +18,7 @@ def load_config_file(config_file_path: str) -> typing.Dict:
 
 
 def deserialise_raw_config(raw_data: dict) -> Config:
-    return Config.from_dict(raw_data)
+    clean_data = {
+        key: value for key, value in raw_data.items() if None not in (key, value)
+    }
+    return Config.from_dict(clean_data)
