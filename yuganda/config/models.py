@@ -56,6 +56,6 @@ class PostgresConfig(BaseConfig):
 class Config(BaseConfig):
     """Root configuration model."""
 
-    bot: BotConfig
+    bot: BotConfig = attr.ib(factory=BotConfig)
     logging: LoggingConfig = attr.ib(factory=LoggingConfig)
     database: PostgresConfig = attr.ib(factory=PostgresConfig)

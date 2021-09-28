@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+    bot:
+        build: "."
+        restart: "unless-stopped"
+        depends_on:
+            - "database"
+        env_file: "./.env"
+        links:
+            - "database"
+        container_name: "yuganda-bot"
+    database:
+        image: "postgres:13.4-bullseye"
+        env_file: "./.env"
+        environment:
+            POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+        volumes:
+            - ".postgres:/var/lib/postgresql/data"
+        ports:
+            - "5656:5656"
+            - "8888:8888"
+        container_name: "yuganda-db"
