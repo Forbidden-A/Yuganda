@@ -17,5 +17,8 @@ def load_config_file(config_file_path: str) -> typing.Dict:
         return yaml.safe_load(fp)
 
 
-def deserialise_raw_config(raw_data: dict) -> Config:
-    return Config.from_dict(raw_data)
+def deserialise_raw_config(raw_data: dict = {}) -> Config:
+    clean_data = {
+        key: value for key, value in raw_data.items() if None not in (key, value)
+    }
+    return Config.from_dict(clean_data)
