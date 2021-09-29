@@ -1,73 +1,15 @@
 import logging
-import os
-
-from asyncpg.pool import Pool
-from yuganda.database import Database
-import hikari
-from yuganda.config.models import Config
-from yuganda.config.load import deserialise_raw_config, load_config_file
-import lightbulb
-
-CONFIG_PATH = os.environ.get("YUGANDA_CONFIG_PATH") or "./config.yml"
-CONFIG_CACHE = deserialise_raw_config(load_config_file(CONFIG_PATH))
-
-logging.basicConfig(
-    level=CONFIG_CACHE.logging.level,
-    style="{",
-    format=CONFIG_CACHE.logging.log_format,
-    datefmt=CONFIG_CACHE.logging.date_format,
-)
-
-_LOGGER = logging.getLogger("yuganda")
-
-
-class Yuganda(lightbulb.Bot):
-    def __init__(self) -> None:
-
-        self._database: Database
-
-        super().__init__(
-            slash_commands_only=True,
-            intents=hikari.Intents.ALL,
-            token=self.config.bot.token,
-        )
-
-        subscriptions = {
-            hikari.events.StartingEvent: self.on_starting,
-            hikari.events.StartedEvent: self.on_started,
-            hikari.events.ShardReadyEvent: self.on_shard_ready,
-        }
-
-        for event, callback in subscriptions.items():
-            self.subscribe(event, callback)
-
-    @property
-    def config(self) -> Config:
-        global CONFIG_CACHE
-        return CONFIG_CACHE or (
-            CONFIG_CACHE := deserialise_raw_config(load_config_file(CONFIG_PATH))
-        )
-
-    @property
-    def database(self) -> Pool:
-        if self._database is None:
-            raise RuntimeError("Database is None.")
-        return self._database
-
-    async def on_starting(self, event: hikari.StartingEvent):
-        _LOGGER.info("Bot is Starting..")
-        _LOGGER.info("Connecting to database..")
-        self._database = Database(self, CONFIG_CACHE.database)
-        await self.database.initialise()
-
-    async def on_started(self, event: hikari.StartedEvent):
-        pass
-
-    async def on_shard_ready(self, event: hikari.ShardReadyEvent):
-        pass
+from yuganda import Yuganda
 
 
 def main():
+    logging.basicConfig(
+        level=Yuganda.CONFIG_CACHE.logging.level,
+        style="{",
+        format=Yuganda.CONFIG_CACHE.logging.log_format,
+        datefmt=Yuganda.CONFIG_CACHE.logging.date_format,
+    )
+
     bot = Yuganda()
 
     bot.run()

@@ -1,6 +1,6 @@
 # Heavily inspired by https://github.com/IkBenOlie5/Kangakari/
 import logging
-from yuganda.config.models import PostgresConfig
+from yuganda.config import PostgresConfig
 from yuganda.resources import get_resource
 import asyncpg
 from lightbulb import Bot
@@ -9,7 +9,9 @@ import functools
 import asyncio
 import hikari
 
-_LOGGER = logging.getLogger()
+__all__ = ["Database"]
+
+_LOGGER = logging.getLogger("yuganda.database")
 
 _any_callable = typing.Callable[..., typing.Any]
 

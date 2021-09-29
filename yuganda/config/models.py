@@ -4,6 +4,8 @@ from typing import Type, TypeVar
 import attr
 import cattr
 
+__all__ = ["BotConfig", "LoggingConfig", "PostgresConfig", "Config"]
+
 ThisImplT = TypeVar("ThisImplT")
 
 
