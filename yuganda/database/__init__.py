@@ -1,6 +1,7 @@
 # Heavily inspired by https://github.com/IkBenOlie5/Kangakari/
 import logging
 from yuganda.config.models import PostgresConfig
+from yuganda.resources import get_resource
 import asyncpg
 from lightbulb import Bot
 import typing
@@ -34,8 +35,14 @@ class Database:
         _LOGGER.info("Creating data pool")
         self._pool = await asyncpg.create_pool(**self.config.to_dict())
         _LOGGER.info("Syncing and executing schemas")
-        # TODO: Execute schema and sync.
         self._connected.set()
+        con: asyncpg.Connection
+        async with self.pool.acquire() as con:
+            async with con.transaction():
+                schema: str
+                with get_resource("schema.sql") as fp:
+                    schema = fp.read()
+                await con.executemany(schema)
 
     async def close(self):
         assert self.is_connected, "Database is not connected."

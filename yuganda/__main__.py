@@ -50,14 +50,14 @@ class Yuganda(lightbulb.Bot):
 
     @property
     def database(self) -> Pool:
-        if self.database is None:
+        if self._database is None:
             raise RuntimeError("Database is None.")
         return self._database
 
     async def on_starting(self, event: hikari.StartingEvent):
         _LOGGER.info("Bot is Starting..")
         _LOGGER.info("Connecting to database..")
-        self.database = Database(self, CONFIG_CACHE.database)
+        self._database = Database(self, CONFIG_CACHE.database)
         await self.database.initialise()
 
     async def on_started(self, event: hikari.StartedEvent):
