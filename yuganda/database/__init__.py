@@ -42,7 +42,7 @@ class Database:
                 schema: str
                 with get_resource("schema.sql") as fp:
                     schema = fp.read()
-                await con.executemany(schema)
+                await con.execute(schema)
 
     async def close(self):
         assert self.is_connected, "Database is not connected."
