@@ -1,9 +1,5 @@
-from yuganda.config import *
-from yuganda.database import *
-from yuganda.resources import *
-
-from yuganda.app import *
-from yuganda.config import *
-from yuganda.database import *
-from yuganda.resources import *
-from yuganda.extensions import *
+from yuganda.app import *  # noqa
+from yuganda.config import *  # noqa
+from yuganda.database import *  # noqa
+from yuganda.resources import *  # noqa
+from yuganda.extensions import *  # noqa
