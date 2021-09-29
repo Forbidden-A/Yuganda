@@ -3,6 +3,8 @@ from yuganda.config.models import Config
 import yaml
 import logging
 
+__all__ = ["load_config_file", "deserialise_raw_config"]
+
 _LOGGER = logging.getLogger("yuganda.config")
 
 
