@@ -2,7 +2,6 @@ import logging
 import os
 import hikari
 import lightbulb
-from asyncpg import Pool
 from yuganda.config import Config, deserialise_raw_config, load_config_file
 from yuganda.database import Database
 
@@ -47,7 +46,7 @@ class Yuganda(lightbulb.Bot):
         return Yuganda.CONFIG_CACHE
 
     @property
-    def database(self) -> Pool:
+    def database(self) -> Database:
         if self._database is None:
             raise RuntimeError("Database is None.")
         return self._database
